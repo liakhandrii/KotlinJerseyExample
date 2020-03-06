@@ -7,13 +7,13 @@ import org.litote.kmongo.*
 import org.litote.kmongo.util.KMongoUtil
 
 fun <T> MongoCollection<T>.findById(id: String): T? {
-    return this.findOne("{\"_id\": \"$id\"}")
+	return this.findOneById(StringId<T>(id))
 }
 
 fun <T> MongoCollection<T>.deleteById(id: String): DeleteResult {
-    return this.deleteOne("{\"_id\": \"$id\"}")
+	return this.deleteOneById(StringId<T>(id))
 }
 
 fun <T> MongoCollection<T>.replaceById(id: String, newObject: T): UpdateResult {
-    return this.replaceOne(KMongoUtil.toBson("{\"_id\": \"$id\"}"), newObject)
+	return this.replaceOne(KMongoUtil.idFilterQuery(StringId<T>(id)), newObject)
 }
